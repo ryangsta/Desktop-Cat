@@ -2,12 +2,6 @@ import tkinter as tk
 import time
 import random
 from random import randint
-from win32api import GetMonitorInfo, MonitorFromPoint
-
-monitor_info=GetMonitorInfo(MonitorFromPoint((0, 0)))
-work_area=monitor_info.get('Work')
-screen_width=work_area[2]
-work_height=work_area[3]
 
 idle_num =[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] #12
 sleep_num = [19, 20, 21, 22, 23, 24, 25] #26
@@ -30,8 +24,8 @@ class Ket:
 
         self.walking_right=[tk.PhotoImage(file='assets/walkingright1.png'), tk.PhotoImage(file='assets/walkingright2.png'), tk.PhotoImage(file='assets/walkingright3.png'), tk.PhotoImage(file='assets/walkingright4.png') ]
 
-        self.x=int(screen_width*0.8)
-        self.y=work_height-64
+        self.x= 1600
+        self.y= 975
 
         self.i_frame=0
         self.state=1
@@ -51,8 +45,8 @@ class Ket:
         self.window.mainloop()
 
 
-    def event(self, i_frame, state, event_number, x):
-        if self.event_number in idle_num:
+    def event(self, i_frame, state, event_number, x): ## add some global timer for each animation
+        if self.event_number in idle_num: ## if the current idle timer > the allotted time 
             self.state=0
             self.window.after(400, self.update, self.i_frame, self.state, self.event_number, self.x)
         elif self.event_number==12:
@@ -70,6 +64,8 @@ class Ket:
         elif self.event_number == 26:
             self.state = 3
             self.window.after(100, self.update, self.i_frame, self.state, self.event_number, self.x)
+
+        
 
     def animate(self, i_frame, array, event_number, a, b):
         if self.i_frame<len(array)-1:
@@ -97,7 +93,7 @@ class Ket:
             self.frame=self.walking_left[self.i_frame]
             self.i_frame, self.event_number=self.animate(self.i_frame, self.walking_left, self.event_number, 1, 18)
             self.x-=3
-        elif self.state == 5 and x<(screen_width-72):
+        elif self.state == 5:
             self.frame=self.walking_right[self.i_frame]
             self.i_frame, self.event_number=self.animate(self.i_frame, self.walking_right, self.event_number, 1, 18)
             self.x+=3
